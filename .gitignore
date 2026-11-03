@@ -1,0 +1,9 @@
+# Agent working folders (kept local, never committed)
+reports/
+tmp/
+instructions/
+memo/
+
+# Tooling
+node_modules/
+.DS_Store

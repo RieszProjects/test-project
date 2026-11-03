@@ -1,0 +1,92 @@
+/* Design tokens. Dark academia is the default; "light" is a parchment variant. */
+
+:root {
+  --font-display: 'Cormorant Garamond', 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+  --font-body: 'EB Garamond', 'Noto Serif SC', 'Songti SC', 'STSong', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 16px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #14100c;
+  --bg-deep: #0d0a07;
+  --surface: #1b1611;
+  --surface-2: #221b15;
+  --surface-3: #2c241c;
+  --line: #392e24;
+  --line-strong: #54443a;
+
+  --ink: #ece0c8;
+  --ink-soft: #cdbd9c;
+  --ink-muted: #9a876b;
+  --ink-faint: #6c5d4a;
+
+  --brass: #c9a35a;
+  --brass-bright: #e2c27f;
+  --brass-soft: rgba(201, 163, 90, 0.13);
+  --oxblood: #a4503f;
+  --oxblood-soft: rgba(164, 80, 63, 0.16);
+  --moss: #8fa06e;
+  --moss-soft: rgba(143, 160, 110, 0.16);
+  --slate: #7f8da3;
+  --slate-soft: rgba(127, 141, 163, 0.16);
+
+  --band-night: #17171f;
+  --band-night-ink: #7b7f95;
+  --band-twilight: #2a2117;
+  --band-twilight-ink: #c9ab7c;
+  --band-work: #263020;
+  --band-work-ink: #d7e2bd;
+
+  --shadow-card: 0 1px 0 rgba(255, 240, 210, 0.04) inset, 0 18px 40px -24px rgba(0, 0, 0, 0.8);
+  --shadow-pop: 0 24px 60px -18px rgba(0, 0, 0, 0.85), 0 0 0 1px var(--line-strong);
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px rgba(201, 163, 90, 0.65);
+  --grain-opacity: 0.07;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #efe5d1;
+  --bg-deep: #e5d8bf;
+  --surface: #f6eedd;
+  --surface-2: #efe4cd;
+  --surface-3: #e6d7ba;
+  --line: #d4c09d;
+  --line-strong: #b9a07a;
+
+  --ink: #2a1f15;
+  --ink-soft: #4a3a2a;
+  --ink-muted: #7a6650;
+  --ink-faint: #a38f73;
+
+  --brass: #8d5f1c;
+  --brass-bright: #a8722a;
+  --brass-soft: rgba(141, 95, 28, 0.11);
+  --oxblood: #8e3626;
+  --oxblood-soft: rgba(142, 54, 38, 0.1);
+  --moss: #4f6533;
+  --moss-soft: rgba(79, 101, 51, 0.12);
+  --slate: #4c5a70;
+  --slate-soft: rgba(76, 90, 112, 0.12);
+
+  --band-night: #d9d6d6;
+  --band-night-ink: #5b5866;
+  --band-twilight: #ecd9b4;
+  --band-twilight-ink: #6e4f22;
+  --band-work: #d8e0bf;
+  --band-work-ink: #33441f;
+
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 16px 34px -24px rgba(70, 45, 15, 0.45);
+  --shadow-pop: 0 22px 50px -18px rgba(70, 45, 15, 0.45), 0 0 0 1px var(--line-strong);
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px rgba(141, 95, 28, 0.55);
+  --grain-opacity: 0.1;
+}

@@ -1,0 +1,11 @@
+{
+  "name": "horologium-timezone-converter",
+  "version": "1.0.0",
+  "description": "A static, dependency-free web tool for converting times between IANA time zones.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.js\"",
+    "serve": "python3 -m http.server 8000 --directory site"
+  }
+}

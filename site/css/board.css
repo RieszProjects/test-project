@@ -1,0 +1,230 @@
+/* Comparison clock cards. */
+
+.zone-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 268px), 1fr));
+  gap: 16px;
+}
+
+.zone-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 18px 18px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--surface-2);
+  overflow: hidden;
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+/* Period-of-day accent along the top edge */
+.zone-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: var(--accent, var(--line-strong));
+  opacity: 0.85;
+}
+
+.zone-card.band-work {
+  --accent: var(--moss);
+}
+
+.zone-card.band-twilight {
+  --accent: var(--brass);
+}
+
+.zone-card.band-night {
+  --accent: var(--slate);
+}
+
+.zone-card:hover {
+  border-color: var(--line-strong);
+}
+
+.zone-card.is-fresh {
+  animation: card-in 0.45s var(--ease);
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+.zone-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.zone-card__names {
+  min-width: 0;
+}
+
+.zone-card__title {
+  font-family: var(--font-display);
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.zone-card__subtitle {
+  font-size: 13.5px;
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.zone-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  flex: none;
+}
+
+.zone-card__clock {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.zone-card__time {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 54px;
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+.zone-card__meridiem {
+  font-size: 16px;
+  color: var(--ink-soft);
+}
+
+.zone-card__date {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink-soft);
+  font-size: 15.5px;
+}
+
+.period {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  color: var(--ink-muted);
+}
+
+.period::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.period--work {
+  --accent: var(--moss);
+}
+
+.period--twilight {
+  --accent: var(--brass);
+}
+
+.period--night {
+  --accent: var(--slate);
+}
+
+.zone-card__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+}
+
+.zone-card__offsets {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  font-size: 13.5px;
+  color: var(--ink-muted);
+}
+
+.zone-card__diff {
+  color: var(--ink-soft);
+}
+
+.zone-card__actions {
+  display: flex;
+  gap: 2px;
+  flex: none;
+}
+
+.zone-card__actions .icon-btn {
+  width: 32px;
+  height: 32px;
+}
+
+.zone-card__actions .icon-btn:last-child:hover {
+  color: var(--oxblood);
+  background: var(--oxblood-soft);
+}
+
+/* ── "Add zone" tile ──────────────────────────────────────────────────── */
+
+.zone-card--add {
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 210px;
+  border: 1px dashed var(--line-strong);
+  background: transparent;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+.zone-card--add::before {
+  display: none;
+}
+
+.zone-card--add:hover,
+.zone-card--add[aria-expanded='true'] {
+  border-color: var(--brass);
+  color: var(--brass-bright);
+  background: var(--brass-soft);
+}
+
+.zone-card--add__label {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.zone-card--add__hint {
+  font-size: 13.5px;
+  font-style: italic;
+  color: var(--ink-faint);
+}

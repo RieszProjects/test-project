@@ -1,0 +1,163 @@
+/* Hour-by-hour comparison table. */
+
+.hour-grid-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--bg-deep);
+}
+
+.hour-grid {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 100%;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.hour-grid tr + tr > * {
+  border-top: 1px solid var(--line);
+}
+
+.hour-grid__zone {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  min-width: 158px;
+  max-width: 190px;
+  padding: 8px 14px;
+  background: var(--surface);
+  border-right: 1px solid var(--line-strong);
+  text-align: left;
+  font-weight: normal;
+}
+
+.hour-grid__title {
+  display: block;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hour-grid__offset {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+.is-reference .hour-grid__title {
+  color: var(--brass-bright);
+}
+
+.hour-cell {
+  position: relative;
+  min-width: 46px;
+  height: 52px;
+  padding: 14px 4px 6px;
+  text-align: center;
+  font-size: 15px;
+  cursor: pointer;
+  border-left: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  transition: filter 0.15s var(--ease);
+}
+
+.hour-cell.band-night {
+  background: var(--band-night);
+  color: var(--band-night-ink);
+}
+
+.hour-cell.band-twilight {
+  background: var(--band-twilight);
+  color: var(--band-twilight-ink);
+}
+
+.hour-cell.band-work {
+  background: var(--band-work);
+  color: var(--band-work-ink);
+}
+
+.hour-cell:hover {
+  filter: brightness(1.18);
+}
+
+:root[data-theme='light'] .hour-cell:hover {
+  filter: brightness(0.94);
+}
+
+.hour-cell__date {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.02em;
+  opacity: 0.8;
+}
+
+.hour-cell.is-current {
+  box-shadow:
+    inset 2px 0 0 var(--brass),
+    inset -2px 0 0 var(--brass);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+tr:first-child .hour-cell.is-current {
+  box-shadow:
+    inset 2px 0 0 var(--brass),
+    inset -2px 0 0 var(--brass),
+    inset 0 2px 0 var(--brass);
+}
+
+tr:last-child .hour-cell.is-current {
+  box-shadow:
+    inset 2px 0 0 var(--brass),
+    inset -2px 0 0 var(--brass),
+    inset 0 -2px 0 var(--brass);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend__swatch {
+  width: 22px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid var(--line-strong);
+}
+
+.legend__swatch.band-work {
+  background: var(--band-work);
+}
+
+.legend__swatch.band-twilight {
+  background: var(--band-twilight);
+}
+
+.legend__swatch.band-night {
+  background: var(--band-night);
+}
+
+@media (max-width: 640px) {
+  .hour-grid__zone {
+    min-width: 118px;
+    padding: 8px 10px;
+  }
+}

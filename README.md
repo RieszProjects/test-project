@@ -26,7 +26,8 @@
 
 ```
 site/                    # 部署到 GitHub Pages 的静态站点
-  index.html
+  index.html             # Horologium
+  pseudo3d/              # 伪 3D 查看器（独立页面，WebGL2）
   css/                   # tokens（配色/字体变量）、base、layout 及各组件样式
   js/
     core/                # 与 DOM 无关的核心逻辑
@@ -38,7 +39,7 @@ site/                    # 部署到 GitHub Pages 的静态站点
     app/                 # 应用层：状态与操作、视图模型、基准面板
     ui/                  # 可复用组件：弹出层、时区选择器、日历、时间输入、提示条等
     main.js              # 入口，负责组装
-tests/                   # node:test 单元测试（核心逻辑与状态操作）
+tests/                   # node:test 单元测试（时区核心逻辑与状态操作、伪 3D 查看器的相机与混合权重）
 .github/workflows/       # 测试通过后部署到 GitHub Pages
 ```
 
@@ -48,7 +49,17 @@ tests/                   # node:test 单元测试（核心逻辑与状态操作�
 
 ```bash
 npm test          # 运行单元测试
-npm run serve     # 在 http://localhost:8000 预览
+npm run serve     # 在 http://localhost:8000 预览（伪 3D 查看器在 /pseudo3d/）
 ```
 
 推送到 `main` 分支后，GitHub Actions 会先运行测试，测试通过后把 `site/` 目录部署到 GitHub Pages。
+
+## 伪 3D 查看器（`site/pseudo3d/`）
+
+由十几张不同角度的生成图片重建出的伪 3D 模型，可在浏览器里实时旋转、缩放查看（需要 WebGL2）。
+
+**在线查看：** https://rieszprojects.github.io/test-project/pseudo3d/
+
+- 几何是从各张图片的轮廓求出的可视外壳；渲染时把原图投影回表面，按当前视角混合角度最近的几张（非结构化光场权重），并用各视角的深度图判断遮挡。
+- 四种显示：混合、单张、几何、来源；可显示源相机、单独关闭某张照片、切换正交投影。
+- `?object=<名称>` 加载 `site/pseudo3d/assets/<名称>/` 下的其他重建结果。生成图片和重建模型的脚本不在本仓库中，这里只有查看器和导出的资源。

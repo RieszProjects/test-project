@@ -4,6 +4,9 @@ tmp/
 instructions/
 memo/
 
+# Sub-projects that are not meant to be published (the repo is public)
+private/
+
 # Tooling
 node_modules/
 .DS_Store

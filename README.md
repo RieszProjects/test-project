@@ -2,9 +2,13 @@
 
 各种临时小工具和测试的合集，没有统一主题，各子项目互不相关。
 
+本仓库是公开的，只收录需要发布到 GitHub Pages 的内容。其余子项目放在被 git 忽略的 `private/` 目录中，不进版本库。
+
 ## Horologium · 时区换算（`site/`）
 
 一个纯前端、零依赖的网页小工具，用于在世界各地的时区之间换算时间。
+
+**在线使用：** https://rieszprojects.github.io/test-project/
 
 ### 功能
 
@@ -21,7 +25,7 @@
 ### 目录结构
 
 ```
-site/                    # 静态站点
+site/                    # 部署到 GitHub Pages 的静态站点
   index.html
   css/                   # tokens（配色/字体变量）、base、layout 及各组件样式
   js/
@@ -35,6 +39,7 @@ site/                    # 静态站点
     ui/                  # 可复用组件：弹出层、时区选择器、日历、时间输入、提示条等
     main.js              # 入口，负责组装
 tests/                   # node:test 单元测试（核心逻辑与状态操作）
+.github/workflows/       # 测试通过后部署到 GitHub Pages
 ```
 
 ### 本地开发
@@ -46,10 +51,4 @@ npm test          # 运行单元测试
 npm run serve     # 在 http://localhost:8000 预览
 ```
 
-## 伪 3D 重建（`pseudo3d/`）
-
-用 NovelAI 画一张绿幕参考图，再让 GPT 按指定角度生成其他视角，只靠各张图的轮廓估计相机、重建可视外壳，最后在 WebGL2 查看器里按视角混合原图实时渲染。详见 [`pseudo3d/README.md`](pseudo3d/README.md)。
-
-```bash
-python3 -m http.server 8000 --directory pseudo3d/viewer   # 打开 http://localhost:8000/
-```
+推送到 `main` 分支后，GitHub Actions 会先运行测试，测试通过后把 `site/` 目录部署到 GitHub Pages。

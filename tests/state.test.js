@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { buildHourGrid, buildZoneCard } from '../site/js/app/model.js';
-import { createActions } from '../site/js/app/state.js';
-import { buildShareHash, readShareHash } from '../site/js/core/persistence.js';
-import { createStore } from '../site/js/core/store.js';
-import { getZonedFields } from '../site/js/core/tz.js';
+import { buildHourGrid, buildZoneCard } from '../site/horologium/js/app/model.js';
+import { createActions } from '../site/horologium/js/app/state.js';
+import { buildShareHash, readShareHash } from '../site/horologium/js/core/persistence.js';
+import { createStore } from '../site/horologium/js/core/store.js';
+import { getZonedFields } from '../site/horologium/js/core/tz.js';
 
 const freshStore = (overrides = {}) =>
   createStore({

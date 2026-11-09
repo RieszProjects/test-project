@@ -7,7 +7,7 @@ import {
   isDaylightSaving,
   isValidZone,
   zonedToInstant,
-} from '../site/js/core/tz.js';
+} from '../site/horologium/js/core/tz.js';
 
 const at = (iso) => Date.parse(iso);
 

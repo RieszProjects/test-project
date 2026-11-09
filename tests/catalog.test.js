@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { describeZone, listZones, parseOffsetQuery, searchZones } from '../site/js/core/catalog.js';
+import { describeZone, listZones, parseOffsetQuery, searchZones } from '../site/horologium/js/core/catalog.js';
 
 const ids = (entries) => entries.map((e) => e.id);
 

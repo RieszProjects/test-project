@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>时区换算 · Horologium</title>
+    <meta name="description" content="在世界各地的时区之间换算时间：支持夏令时、城市中文搜索、逐小时对照与分享链接。" />
+    <meta name="theme-color" content="#14100c" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%2314100c' stroke='%23c9a35a' stroke-width='3'/%3E%3Cpath d='M32 14v18l12 8' fill='none' stroke='%23ebdfc6' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;600&display=swap"
+    />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/reference.css" />
+    <link rel="stylesheet" href="css/board.css" />
+    <link rel="stylesheet" href="css/grid.css" />
+    <link rel="stylesheet" href="css/overlays.css" />
+    <script type="module" src="js/main.js"></script>
+  </head>
+  <body>
+    <div class="page">
+      <header class="masthead">
+        <div class="brand">
+          <svg class="brand__sigil" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="29" />
+            <circle cx="32" cy="32" r="23" class="brand__inner" />
+            <path d="M32 6v5M32 53v5M6 32h5M53 32h5" class="brand__ticks" />
+            <path d="M32 18v14l9 6" class="brand__hands" />
+          </svg>
+          <div>
+            <p class="eyebrow">Horologium · 世界时刻对照簿</p>
+            <h1 class="brand__title">时区换算</h1>
+          </div>
+        </div>
+        <nav class="toolbar" aria-label="显示与分享">
+          <button id="toggle-hour12" class="chip" type="button" aria-pressed="false">24 小时制</button>
+          <button id="copy-all" class="chip" type="button">复制全部</button>
+          <button id="share" class="btn btn--brass" type="button">
+            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span>
+            分享链接
+          </button>
+          <button id="toggle-theme" class="icon-btn icon-btn--framed" type="button" aria-label="切换主题" data-tip-align="end"></button>
+        </nav>
+      </header>
+
+      <main class="sections">
+        <section id="reference" class="panel reference" aria-labelledby="reference-title">
+          <header class="section-head">
+            <span class="section-head__numeral">I</span>
+            <h2 id="reference-title">基准时刻</h2>
+            <span class="section-head__rule" aria-hidden="true"></span>
+            <button class="live-btn" type="button" data-ref="live" aria-pressed="true"></button>
+          </header>
+
+          <div class="reference__body">
+            <div class="reference__clock" data-ref="time"></div>
+            <div class="reference__controls">
+              <div class="field">
+                <span class="field__label">时区</span>
+                <button class="select-btn" type="button" data-ref="zone" aria-haspopup="dialog" aria-expanded="false"></button>
+              </div>
+              <div class="field">
+                <span class="field__label">日期</span>
+                <button class="select-btn select-btn--date" type="button" data-ref="date" aria-haspopup="dialog" aria-expanded="false"></button>
+              </div>
+              <p class="reference__meta" data-ref="meta"></p>
+            </div>
+          </div>
+
+          <div class="scrubber">
+            <input
+              class="scrubber__range"
+              type="range"
+              min="0"
+              max="1439"
+              step="5"
+              value="0"
+              data-ref="scrubber"
+              aria-label="在当天内拖动基准时间"
+            />
+            <div class="scrubber__ticks" aria-hidden="true">
+              <span>00</span><span>03</span><span>06</span><span>09</span><span>12</span><span>15</span><span>18</span><span>21</span><span>24</span>
+            </div>
+          </div>
+
+          <p class="notice" data-ref="notice" hidden></p>
+          <p class="hint">提示：在时间上按 ↑/↓ 或滚动鼠标滚轮可逐分钟调整（按住 Shift 加大步长）。</p>
+        </section>
+
+        <section class="panel" aria-labelledby="board-title">
+          <header class="section-head">
+            <span class="section-head__numeral">II</span>
+            <h2 id="board-title">世界时刻</h2>
+            <span class="section-head__rule" aria-hidden="true"></span>
+          </header>
+          <div id="zone-board" class="zone-board"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="grid-title">
+          <header class="section-head">
+            <span class="section-head__numeral">III</span>
+            <h2 id="grid-title">逐时对照</h2>
+            <span class="section-head__rule" aria-hidden="true"></span>
+          </header>
+          <p class="hint">每一列是基准时区当天的一个小时；点击任意一格即可把基准时刻移到该小时。色带标出各地的工作时段与夜间，便于安排跨时区会议。</p>
+          <div id="hour-grid" class="hour-grid-wrap scroll-area"></div>
+          <ul class="legend" aria-label="图例">
+            <li><span class="legend__swatch band-work"></span>工作时段 9–18</li>
+            <li><span class="legend__swatch band-twilight"></span>清晨 / 晚间</li>
+            <li><span class="legend__swatch band-night"></span>夜间 22–6</li>
+          </ul>
+        </section>
+      </main>
+
+      <footer class="colophon">
+        <span>时区数据来自浏览器内置的 IANA 时区库，夏令时自动处理。</span>
+        <span class="colophon__mark">❦</span>
+        <span>所有计算均在本地完成，不上传任何数据。</span>
+      </footer>
+    </div>
+    <div id="toast-root" class="toast-root" aria-live="polite"></div>
+    <noscript><p class="noscript">此工具需要启用 JavaScript。</p></noscript>
+  </body>
+</html>

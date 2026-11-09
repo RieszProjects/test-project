@@ -12,7 +12,7 @@ import {
   relativeDayLabel,
   toIsoLocal,
   weekdayOf,
-} from '../site/js/core/format.js';
+} from '../site/horologium/js/core/format.js';
 
 test('offset labels', () => {
   assert.equal(formatOffset(480), 'UTC+08:00');

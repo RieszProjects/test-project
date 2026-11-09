@@ -2,13 +2,13 @@
 
 各种临时小工具和测试的合集，没有统一主题，各子项目互不相关。
 
-本仓库是公开的，只收录需要发布到 GitHub Pages 的内容。其余子项目放在被 git 忽略的 `private/` 目录中，不进版本库。
+本仓库是公开的，只收录需要发布到 GitHub Pages 的内容。站点首页 https://rieszprojects.github.io/test-project/ 是各工具的目录。其余子项目放在被 git 忽略的 `private/` 目录中，不进版本库。
 
-## Horologium · 时区换算（`site/`）
+## Horologium · 时区换算（`site/horologium/`）
 
 一个纯前端、零依赖的网页小工具，用于在世界各地的时区之间换算时间。
 
-**在线使用：** https://rieszprojects.github.io/test-project/
+**在线使用：** https://rieszprojects.github.io/test-project/horologium/
 
 ### 功能
 
@@ -17,7 +17,7 @@
 - **逐时对照**：按小时列出基准时区当天 24 小时在各地对应的时刻，用色带标出工作时段与夜间，适合安排跨时区会议；点击任一格即可跳到该小时。
 - **搜索**：支持中文城市名、英文名、国家、常见缩写（EST、JST、CET…）以及 `+8`、`UTC-5`、`+5:30` 这样的偏移量。
 - **夏令时处理**：输入了因夏令时跳过的时刻时会自动顺延并提示；输入的时刻出现两次时（时钟回拨）会提示，并可切换为第二次。
-- **分享链接**：把当前基准时刻和时区列表编码进网址（如 `#t=2026-11-03T09:00&from=Asia/Shanghai&to=Europe/London`）。打开别人的分享链接不会覆盖自己保存的时区列表。
+- **分享链接**：把当前基准时刻和时区列表编码进网址（如 `#t=2026-11-03T09:00&from=Asia/Shanghai&to=Europe/London`）。以前指向站点根目录的分享链接会自动跳转到 `/horologium/`。打开别人的分享链接不会覆盖自己保存的时区列表。
 - 暗色学术风与羊皮纸浅色两套主题；12/24 小时制切换；偏好保存在浏览器本地。
 
 所有计算都在浏览器本地完成，时区数据来自浏览器内置的 IANA 时区库（`Intl.DateTimeFormat`），不需要任何后端或第三方库。
@@ -26,19 +26,21 @@
 
 ```
 site/                    # 部署到 GitHub Pages 的静态站点
-  index.html             # Horologium
+  index.html, home/      # 根目录的目录页及其样式、预览图
   pseudo3d/              # 伪 3D 查看器（独立页面，WebGL2）
-  css/                   # tokens（配色/字体变量）、base、layout 及各组件样式
-  js/
-    core/                # 与 DOM 无关的核心逻辑
-      tz.js              #   时区换算（含夏令时空档/重叠处理）
-      format.js          #   中文格式化
-      catalog.js         #   时区目录与搜索
-      persistence.js     #   本地偏好与分享链接
-      store.js           #   极简状态容器
-    app/                 # 应用层：状态与操作、视图模型、基准面板
-    ui/                  # 可复用组件：弹出层、时区选择器、日历、时间输入、提示条等
-    main.js              # 入口，负责组装
+  horologium/            # 时区换算
+    index.html
+    css/                 # tokens（配色/字体变量）、base、layout 及各组件样式
+    js/
+      core/              # 与 DOM 无关的核心逻辑
+        tz.js            #   时区换算（含夏令时空档/重叠处理）
+        format.js        #   中文格式化
+        catalog.js       #   时区目录与搜索
+        persistence.js   #   本地偏好与分享链接
+        store.js         #   极简状态容器
+      app/               # 应用层：状态与操作、视图模型、基准面板
+      ui/                # 可复用组件：弹出层、时区选择器、日历、时间输入、提示条等
+      main.js            # 入口，负责组装
 tests/                   # node:test 单元测试（时区核心逻辑与状态操作、伪 3D 查看器的相机与混合权重）
 .github/workflows/       # 测试通过后部署到 GitHub Pages
 ```
@@ -49,7 +51,7 @@ tests/                   # node:test 单元测试（时区核心逻辑与状态�
 
 ```bash
 npm test          # 运行单元测试
-npm run serve     # 在 http://localhost:8000 预览（伪 3D 查看器在 /pseudo3d/）
+npm run serve     # 在 http://localhost:8000 预览（目录页；时区换算在 /horologium/，伪 3D 查看器在 /pseudo3d/）
 ```
 
 推送到 `main` 分支后，GitHub Actions 会先运行测试，测试通过后把 `site/` 目录部署到 GitHub Pages。

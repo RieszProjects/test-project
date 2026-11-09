@@ -2,7 +2,7 @@
 
 Usage (from the repository root):
     pseudo3d/.venv/bin/python pseudo3d/build.py pseudo3d/objects/pistol/views.json \
-        --raw tmp/p3d/pistol/raw --work tmp/p3d/pistol/work --out site/pseudo3d/assets/pistol
+        --raw tmp/p3d/pistol/raw --work tmp/p3d/pistol/work --out pseudo3d/viewer/assets/pistol
 
 Steps: green-screen keying -> silhouette-based camera estimation -> robust visual hull -> mesh
 -> web assets. Camera estimates are written next to views.json as cameras.json; pass --reuse-cameras

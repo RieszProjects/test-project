@@ -45,3 +45,11 @@ tests/                   # node:test 单元测试（核心逻辑与状态操作�
 npm test          # 运行单元测试
 npm run serve     # 在 http://localhost:8000 预览
 ```
+
+## 伪 3D 重建（`pseudo3d/`）
+
+用 NovelAI 画一张绿幕参考图，再让 GPT 按指定角度生成其他视角，只靠各张图的轮廓估计相机、重建可视外壳，最后在 WebGL2 查看器里按视角混合原图实时渲染。详见 [`pseudo3d/README.md`](pseudo3d/README.md)。
+
+```bash
+python3 -m http.server 8000 --directory pseudo3d/viewer   # 打开 http://localhost:8000/
+```

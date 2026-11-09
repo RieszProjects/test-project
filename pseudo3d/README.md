@@ -2,7 +2,15 @@
 
 从同一物体的多张不同角度图片（绿幕背景）重建一个可实时旋转查看的伪 3D 模型。
 
-在线查看：<https://rieszprojects.github.io/test-project/pseudo3d/>（源码在 `site/pseudo3d/`）
+## 查看
+
+查看器是 `viewer/` 下的静态网页（需要支持 WebGL2 的浏览器），默认加载 `viewer/assets/pistol/`：
+
+```bash
+python3 -m http.server 8000 --directory pseudo3d/viewer   # 打开 http://localhost:8000/
+```
+
+`?object=<名称>` 可切换到 `viewer/assets/<名称>/` 下的其他重建结果。
 
 ## 流程
 
@@ -13,7 +21,7 @@
 ```bash
 uv venv pseudo3d/.venv && uv pip install --python pseudo3d/.venv/bin/python -r pseudo3d/requirements.txt
 pseudo3d/.venv/bin/python pseudo3d/build.py pseudo3d/objects/pistol/views.json \
-    --raw <原始图片目录> --work <缓存目录> --out site/pseudo3d/assets/pistol
+    --raw <原始图片目录> --work <缓存目录> --out pseudo3d/viewer/assets/pistol
 ```
 
 ## 算法要点
@@ -21,4 +29,4 @@ pseudo3d/.venv/bin/python pseudo3d/build.py pseudo3d/objects/pistol/views.json \
 - **相机模型**：正交相机，每张图 7 个参数（方位角、仰角、滚转、缩放、两个平移、横纵比），参考图固定。约定见 `recon/camera.py`。
 - **位姿估计**（`recon/align.py`）：两两极线一致性。两台正交相机的轮廓投影到公共轴 `d_i × d_j` 上必须一致，用一维 IoU 打分；参考图的配对权重加倍；角度有弱先验。坐标下降 + 模式搜索。
 - **外壳**（`recon/hull.py`、`recon/mesh.py`）：参考图必须满足，其余视角允许 1 张不同意，生成图的轮廓再放宽一点容差；距离场高斯平滑后用 Marching Cubes 提取，Taubin 平滑，简化到约 11 万面。
-- **渲染**（`site/pseudo3d/js/`）：WebGL2。每张照片按自己的相机投影到表面，先渲染各视角深度图做遮挡判断，再按非结构化光场（ULR）权重混合角度最近的几张。
+- **渲染**（`viewer/js/`）：WebGL2。每张照片按自己的相机投影到表面，先渲染各视角深度图做遮挡判断，再按非结构化光场（ULR）权重混合角度最近的几张。

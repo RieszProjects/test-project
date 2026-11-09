@@ -2,9 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-import { cameraBasis } from '../site/pseudo3d/js/orbit.js';
-import { fromRows3x4, multiply, vec3 } from '../site/pseudo3d/js/mat4.js';
-import { ulrWeights } from '../site/pseudo3d/js/ulr.js';
+import { cameraBasis } from '../pseudo3d/viewer/js/orbit.js';
+import { fromRows3x4, multiply, vec3 } from '../pseudo3d/viewer/js/mat4.js';
+import { ulrWeights } from '../pseudo3d/viewer/js/ulr.js';
 
 const D = Math.PI / 180;
 const close = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} != ${b}`);
@@ -60,7 +60,7 @@ test('ULR weights: normalised, at most k-1 photos, exact view wins', () => {
 });
 
 test('exported scene: every photo sees the object centre inside its texture', () => {
-  const scene = JSON.parse(readFileSync(new URL('../site/pseudo3d/assets/pistol/scene.json', import.meta.url)));
+  const scene = JSON.parse(readFileSync(new URL('../pseudo3d/viewer/assets/pistol/scene.json', import.meta.url)));
   assert.ok(scene.views.length >= 4);
   for (const v of scene.views) {
     const m = v.matrix;

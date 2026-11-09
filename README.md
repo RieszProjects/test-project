@@ -1,10 +1,12 @@
-# Horologium · 时区换算
+# test-project
+
+各种临时小工具和测试的合集，没有统一主题，各子项目互不相关。
+
+## Horologium · 时区换算（`site/`）
 
 一个纯前端、零依赖的网页小工具，用于在世界各地的时区之间换算时间。
 
-**在线使用：** https://rieszprojects.github.io/test-project/ （由 GitHub Actions 自动部署到 GitHub Pages）
-
-## 功能
+### 功能
 
 - **基准时刻**：选择任意 IANA 时区、日期和时间；大号时间可直接键入，↑/↓ 或滚轮逐分钟微调（Shift 加大步长），也可拖动当天时间轴。默认“实时”跟随当前时间。
 - **世界时刻**：同时对照最多 12 个时区，显示当地时间、日期（含“次日 / 前一日”标记）、UTC 偏移、与基准的时差、是否夏令时，以及当地处于工作时段还是夜间。可一键设为基准、复制或移除。
@@ -16,10 +18,10 @@
 
 所有计算都在浏览器本地完成，时区数据来自浏览器内置的 IANA 时区库（`Intl.DateTimeFormat`），不需要任何后端或第三方库。
 
-## 目录结构
+### 目录结构
 
 ```
-site/                    # 部署到 GitHub Pages 的静态站点
+site/                    # 静态站点
   index.html
   css/                   # tokens（配色/字体变量）、base、layout 及各组件样式
   js/
@@ -33,10 +35,9 @@ site/                    # 部署到 GitHub Pages 的静态站点
     ui/                  # 可复用组件：弹出层、时区选择器、日历、时间输入、提示条等
     main.js              # 入口，负责组装
 tests/                   # node:test 单元测试（核心逻辑与状态操作）
-.github/workflows/       # 测试通过后部署到 GitHub Pages
 ```
 
-## 本地开发
+### 本地开发
 
 需要 Node.js 18+（仅用于运行测试）和 Python 3（仅用于本地静态服务器）。
 
@@ -44,5 +45,3 @@ tests/                   # node:test 单元测试（核心逻辑与状态操作�
 npm test          # 运行单元测试
 npm run serve     # 在 http://localhost:8000 预览
 ```
-
-推送到 `main` 分支后，GitHub Actions 会先运行测试，测试通过后把 `site/` 目录部署到 GitHub Pages。

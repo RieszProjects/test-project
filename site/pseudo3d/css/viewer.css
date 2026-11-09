@@ -147,6 +147,60 @@ button {
   color: var(--brass);
 }
 
+.brand .back {
+  pointer-events: auto;
+  display: inline-block;
+  margin-bottom: 2px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--brass);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.brand .back::before {
+  content: '‹ ';
+}
+
+.brand .back:hover {
+  color: var(--brass-bright);
+}
+
+.objects {
+  pointer-events: auto;
+  display: flex;
+  gap: 4px;
+  margin: 8px 0 6px;
+}
+
+.objects:empty {
+  display: none;
+}
+
+.objects a {
+  padding: 3px 11px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--ink-soft);
+  font-size: 13px;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.objects a:hover {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.objects a[aria-current='page'] {
+  border-color: rgba(207, 167, 94, 0.5);
+  background: var(--brass-soft);
+  color: var(--brass-bright);
+}
+
 /* ---------------------------------------------------------------- panel */
 
 .panel {

@@ -35,6 +35,7 @@ export class Renderer {
     this.viewOn = new Float32Array(MAX_VIEWS).fill(1);
     this.highlight = new Float32Array(MAX_VIEWS);
     this.cardFade = new Float32Array(MAX_VIEWS);
+    this.globalW = new Float32Array(MAX_VIEWS);
 
     this.programs = {
       depth: createProgram(gl, depthVS, depthFS),
@@ -213,10 +214,10 @@ export class Renderer {
 
   // Relative weight of every photo for the current viewing direction, using the same
   // unstructured-lumigraph rule as the shader but ignoring occlusion and surface orientation.
-  viewWeights(camBack, k) {
+  viewWeights(camBack, k, sharp = 1) {
     const ang = this.views.map((v, i) => (this.viewOn[i] > 0.5
       ? Math.acos(Math.min(1, Math.max(-1, vec3.dot(camBack, v.dir)))) : Infinity));
-    return ulrWeights(ang, k);
+    return ulrWeights(ang, k, sharp);
   }
 
   draw(camera, settings) {
@@ -271,6 +272,9 @@ export class Renderer {
     gl.uniform1i(p.u('uOrtho'), settings.ortho ? 1 : 0);
     gl.uniform1i(p.u('uMode'), MODES[settings.mode]);
     gl.uniform1i(p.u('uK'), settings.blendCount + 1);
+    gl.uniform1f(p.u('uSharp'), settings.blendSharpness ?? 1);
+    this.globalW.set(this.viewWeights(back, settings.blendCount + 1, settings.blendSharpness ?? 1));
+    gl.uniform1fv(p.u('uGlobalW'), this.globalW);
     gl.uniform1f(p.u('uBias'), 0.004);
     gl.uniform1f(p.u('uDepthTexel'), 1 / DEPTH_SIZE);
     gl.activeTexture(gl.TEXTURE0);

@@ -2,7 +2,7 @@
 import { loadScene } from './scene.js';
 import { Renderer } from './renderer.js';
 import { OrbitCamera, DEG } from './orbit.js';
-import { buildStrip, bindControls, showToast } from './ui.js';
+import { buildStrip, bindControls, buildObjectNav, showToast } from './ui.js';
 
 const params = new URLSearchParams(location.search);
 const objectName = (params.get('object') || 'pistol').replace(/[^a-z0-9_-]/gi, '');
@@ -10,6 +10,7 @@ const objectName = (params.get('object') || 'pistol').replace(/[^a-z0-9_-]/gi, '
 const settings = {
   mode: 'blend',
   blendCount: 2,
+  blendSharpness: 1,
   cards: false,
   shadow: true,
   ortho: false,
@@ -17,20 +18,26 @@ const settings = {
 };
 
 async function start() {
+  fetch('assets/index.json')
+    .then((r) => (r.ok ? r.json() : []))
+    .then((list) => buildObjectNav(document.getElementById('objects'), list, objectName))
+    .catch(() => {});
   const canvas = document.getElementById('view');
   const fill = document.getElementById('loading-fill');
   const scene = await loadScene(`assets/${objectName}`, (p) => {
     fill.style.transform = `scaleX(${p})`;
   });
 
+  // per-object defaults stored with the reconstruction (e.g. a narrower blend for faces)
+  Object.assign(settings, scene.viewer?.settings || {});
   document.getElementById('obj-title').textContent = scene.title || scene.object;
   document.getElementById('obj-count').textContent = scene.views.length;
   document.title = `伪 3D 重建 · ${scene.title || scene.object}`;
 
   const renderer = new Renderer(canvas, scene);
   const R = scene.radius;
-  // the vertical field of view is fixed, so narrow (portrait) screens need the camera further away
-  const homeDistance = () => R * 3.4 * Math.max(1, 1.25 / (window.innerWidth / window.innerHeight));
+  // frame the bounding sphere (vertical field of view 30 degrees); narrow screens need more distance
+  const homeDistance = () => R * 4.2 * Math.max(1, 1.25 / (window.innerWidth / window.innerHeight));
   const camera = new OrbitCamera(canvas, { distance: homeDistance(), minDistance: R * 0.6, maxDistance: R * 16 });
   camera.home = { yaw: 28 * DEG, pitch: 16 * DEG, roll: 0, distance: homeDistance(), target: [0, 0, 0] };
   window.addEventListener('resize', () => { camera.home.distance = homeDistance(); });
@@ -89,7 +96,7 @@ async function start() {
     if (resized || key !== lastKey) {
       lastKey = key;
       renderer.draw(camera, settings);
-      strip.update(renderer.viewWeights(camera.basis().back, settings.blendCount + 1));
+      strip.update(renderer.viewWeights(camera.basis().back, settings.blendCount + 1, settings.blendSharpness));
     }
     requestAnimationFrame(frame);
   };

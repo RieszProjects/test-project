@@ -1,6 +1,6 @@
 // GLSL sources. All programs bind aPosition to location 0 and aNormal to location 1.
 
-export const MAX_VIEWS = 16;
+export const MAX_VIEWS = 24;
 
 // Depth pass: render the mesh as seen by one source camera into a layer of a depth texture array.
 export const depthVS = `#version 300 es
@@ -32,7 +32,10 @@ void main() {
 // the surface faces it. Candidates are blended with unstructured-lumigraph weights (Buehler et al. 2001):
 // with p_i the angle between the current and the i-th camera direction and t the k-th smallest angle,
 // w_i = (1 - p_i / t) / p_i, so at most k-1 photos mix and each photo is reproduced exactly from its
-// own viewpoint. Weights also fade near silhouette edges, where generated views disagree the most.
+// own viewpoint. The weights are computed once per frame from the camera direction (uGlobalW), so the
+// whole object cross-fades coherently instead of breaking into per-pixel patches; per-pixel ULR weights
+// are only a fallback where none of the globally weighted photos sees the surface. Weights also fade
+// near silhouette edges, where generated views disagree the most.
 export const meshFS = `#version 300 es
 precision highp float;
 precision highp sampler2DArray;
@@ -44,12 +47,14 @@ uniform mat4 uViewTex[MAX_VIEWS];
 uniform vec3 uViewDir[MAX_VIEWS];
 uniform vec3 uViewColor[MAX_VIEWS];
 uniform float uViewOn[MAX_VIEWS];
+uniform float uGlobalW[MAX_VIEWS];
 uniform int uViewCount;
 uniform vec3 uEye;
 uniform vec3 uCamBack;
 uniform int uOrtho;
 uniform int uMode;          // 0 blend, 1 nearest photo, 2 geometry, 3 photo weights
 uniform int uK;             // blend the k-1 closest photos
+uniform float uSharp;       // exponent on the angular weights: higher = shorter cross-fades
 uniform float uBias;
 uniform float uDepthTexel;
 
@@ -137,16 +142,26 @@ void main() {
       t = m;
     }
     if (valid < uK) t = t * 1.25 + 0.05;
+    // coherent weights first; per-pixel ULR only where no globally weighted photo sees the point
     vec4 acc = vec4(0.0);
     vec3 tint = vec3(0.0);
     float bestW = -1.0;
     vec3 bestC = vec3(0.0);
     for (int i = 0; i < MAX_VIEWS; i++) {
-      if (ang[i] >= t) continue;
-      float w = base[i] * (1.0 - ang[i] / t) / max(ang[i], 1e-3);
+      float w = base[i] * uGlobalW[i];
+      if (w <= 0.0) continue;
       acc += vec4(col[i] * w, w);
       tint += uViewColor[i] * w;
       if (w > bestW) { bestW = w; bestC = col[i]; }
+    }
+    if (acc.a <= 1e-6) {
+      for (int i = 0; i < MAX_VIEWS; i++) {
+        if (ang[i] >= t) continue;
+        float w = base[i] * pow((1.0 - ang[i] / t) / max(ang[i], 1e-3), uSharp);
+        acc += vec4(col[i] * w, w);
+        tint += uViewColor[i] * w;
+        if (w > bestW) { bestW = w; bestC = col[i]; }
+      }
     }
     if (acc.a <= 0.0) {
       color = accAny.rgb / accAny.a;

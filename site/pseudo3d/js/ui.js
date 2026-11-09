@@ -67,6 +67,18 @@ export function bindControls(settings) {
   return { sync, updateFraming };
 }
 
+// Links to the other reconstructions listed in assets/index.json (hidden when there is only one).
+export function buildObjectNav(container, list, current) {
+  if (!Array.isArray(list) || list.length < 2) return;
+  list.forEach(({ id, title }) => {
+    const a = document.createElement('a');
+    a.href = `?object=${encodeURIComponent(id)}`;
+    a.textContent = title;
+    if (id === current) a.setAttribute('aria-current', 'page');
+    container.appendChild(a);
+  });
+}
+
 const fmtAngle = (x) => `${Math.round(x)}°`;
 
 export function buildStrip(container, views, { onSelect, onToggle }) {

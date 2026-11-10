@@ -594,6 +594,61 @@ input[type='range']::-moz-range-thumb {
   transition: transform 0.12s linear;
 }
 
+/* ---------------------------------------------------------------- view map */
+
+.viewmap {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: min(560px, calc(100% - 40px));
+  height: 150px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+}
+
+.viewmap[hidden] {
+  display: none;
+}
+
+.viewmap-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.viewmap-tip {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 120px;
+  padding: 6px;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-strong);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  text-align: center;
+}
+
+.viewmap-tip img {
+  display: block;
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+}
+
+.viewmap-tip span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
 /* ---------------------------------------------------------------- misc */
 
 .hint {

@@ -4,6 +4,8 @@
 // so at most k-1 photos mix, and a photo seen exactly from its own direction gets all the weight.
 // `sharp` raises the weights to a power, shortening the cross-fade between neighbouring photos.
 export function ulrWeights(angles, k, sharp = 1) {
+  // a tiny index-dependent offset breaks exact ties, which would otherwise give every photo weight 0
+  angles = angles.map((a, i) => a + i * 1e-7);
   const sorted = angles.filter(Number.isFinite).sort((a, b) => a - b);
   if (sorted.length === 0) return angles.map(() => 0);
   const t = sorted.length >= k ? sorted[k - 1] : sorted[sorted.length - 1] * 1.25 + 0.05;

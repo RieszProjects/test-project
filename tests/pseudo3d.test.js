@@ -57,6 +57,10 @@ test('ULR weights: normalised, at most k-1 photos, exact view wins', () => {
   const exact = ulrWeights([0, 0.4, 0.6], 3);
   close(exact[0], 1, 1e-3);
   assert.deepEqual(ulrWeights([Infinity, Infinity], 3), [0, 0]);
+  // exact tie with k = 2 still picks a single photo
+  const tie = ulrWeights([0.3, 0.3, 0.9], 2);
+  close(tie.reduce((a, b) => a + b, 0), 1);
+  assert.equal(tie.filter((x) => x > 0).length, 1);
 });
 
 test('exported scene: every photo sees the object centre inside its texture', () => {

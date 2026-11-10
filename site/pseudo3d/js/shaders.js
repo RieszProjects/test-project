@@ -116,7 +116,7 @@ void main() {
     float soft = textureLod(uImages, vec3(p.xy, float(i)), 3.0).a;  // ~8 px blurred alpha
     float b = vis * c.a * (0.05 + 0.95 * smoothstep(0.5, 0.95, soft)) * smoothstep(0.02, 0.4, facing);
     if (b <= 1e-4) continue;
-    ang[i] = acos(clamp(dot(toEye, uViewDir[i]), -1.0, 1.0));
+    ang[i] = acos(clamp(dot(toEye, uViewDir[i]), -1.0, 1.0)) + float(i) * 1e-6;  // tie-break
     base[i] = b;
     col[i] = toLinear(c.rgb);
     accAny += vec4(col[i] * b, b);

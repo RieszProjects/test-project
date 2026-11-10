@@ -41,13 +41,15 @@ export function bindControls(settings) {
 
   // keep the object centred in the part of the canvas not covered by the panel and the photo strip
   const strip = document.getElementById('strip');
+  const viewmap = document.getElementById('viewmap');
   function updateFraming() {
     const W = window.innerWidth;
     const H = window.innerHeight;
     const wide = W > 720;
     const panelW = wide && !panel.classList.contains('closed') ? panel.offsetWidth + 20 : 0;
+    const bottom = strip.hidden ? viewmap.offsetHeight : strip.offsetHeight;
     settings.shiftX = -panelW / W;
-    settings.shiftY = (strip.offsetHeight + 18) / H;
+    settings.shiftY = (bottom + 18) / H;
   }
   window.addEventListener('resize', updateFraming);
   updateFraming();
